@@ -1,0 +1,42 @@
+public class WeekTwoHomework {
+
+//A method that includes a query for a List of contacts and includes the Account Name and Industry as well. 
+//Use a loop to print the name of each Contact’s Account Name with System.debug.
+ 
+    public static void listOfContacts() {
+     List<Contact> contacts = [SELECT Name, Account.Name, Account.Industry FROM Contact];
+     for (Contact con  : contacts){
+         System.debug('The account name of the Contact '+con.Name+' is '+con.Account.Name);   
+     } 
+        
+}
+
+//A method that includes a query for a list of Accounts AND includes all their closed-won opportunities in a subquery. 
+//Use a loop to print out the name of each Account’s opportunity with System.debug.
+
+    public static void listOfAccounts() {
+        List<Account> accounts = [SELECT Name, (SELECT Name FROM Opportunities WHERE StageName = 'Closed Won') FROM Account ];
+    for (Account acct  : accounts){
+        List<String> oppList = new List<String>();
+        for (Opportunity opp : acct.Opportunities) {
+            oppList.add(opp.Name);}
+     	System.debug('The Account '+acct.Name+' have the following Closed Won opportunities: '+oppList);   		        
+    } 
+    
+}
+    
+//A method that queries for Opportunity records that returns results in a map format.
+
+	 public static void mapOpps() { 
+     List<Opportunity> oppListToMap=[SELECT ID, Name FROM Opportunity];    
+     Map<ID, Opportunity> oppMap = new Map<ID, Opportunity>(oppListToMap); 
+     
+         System.debug('Map of opportunities: '+oppMap);
+         }
+    
+//An aggregate results query that returns an integer equal to the total number of open opportunities in your org.
+public static void countOpps() { 
+	 Integer totalOpps=[SELECT COUNT() FROM Opportunity];
+              System.debug('Total of open opportunities: '+totalOpps);
+         }
+}
